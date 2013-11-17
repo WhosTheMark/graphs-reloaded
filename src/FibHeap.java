@@ -373,7 +373,7 @@ public class FibHeap<E extends Comparable<E>> {
     *                Fibonaci.
     */
           
-    public void ordenar(){
+    private void ordenar(){
         
         /* Si el tamano es mayor a 1, ordeno */
         

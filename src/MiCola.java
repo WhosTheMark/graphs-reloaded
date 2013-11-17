@@ -4,7 +4,7 @@
  *          Andrea Salcedo 10-10666
  */
 
-public class MiCola<E> extends MiLista<E> implements Cola<E>{
+public class MiCola<E> extends ColeccionListaEnlazada<E> implements Cola<E>{
     
     private Caja<E> ultimo;
        
@@ -12,10 +12,8 @@ public class MiCola<E> extends MiLista<E> implements Cola<E>{
         
         /*Se usa una caja centinela*/
         
-        tamano = 0;
-        Caja<E> nuevaCaja = new Caja (null);
-        primero = nuevaCaja;
-        ultimo = nuevaCaja;
+        super();
+        ultimo = primero;
         
     }
     
@@ -29,7 +27,7 @@ public class MiCola<E> extends MiLista<E> implements Cola<E>{
      * Postcondicion: el tamano aumenta en uno /\ E esta encolado.
      */
     
-    public boolean queue(E element) {
+    public boolean add(E element) {
         
              
         Caja<E> nuevaCaja = new Caja(element);
@@ -111,14 +109,26 @@ public class MiCola<E> extends MiLista<E> implements Cola<E>{
         
     }
     
-    //Unsupported operation exception
-    public boolean remove(E element) {
-        return false;
-    }
+      /**
+       * Clona una lista
+       * @return la lista clonada.
+       * NO COPIA LAS REFERENCIAS DE LOS ELEMENTOS.
+       */
+      
+      public Cola<E> clone() {
+      
+         Caja<E> aux = primero.obtenerSig();
+         MiCola<E> cola = new MiCola();
+                 
+         while (aux != null) {
+            E elem = aux.obtenerElem();
+            cola.add(elem);
+            aux = aux.obtenerSig();
+         }
+         
+         return cola;
+      
+      }
     
-    //Nunca lo hemos usado. En algún caso su podría castear de lista a cola.
-    public Lista<E> clone(){
-        return null;
-    }
     
 }

@@ -7,7 +7,7 @@
 
 public interface Cola<E> {
     
-    public boolean queue(E element);
+    public boolean add(E element);
        
     public boolean equals(Cola<E> queue);
     
