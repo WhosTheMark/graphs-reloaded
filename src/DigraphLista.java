@@ -152,9 +152,7 @@
         
          for (int i = 0; i < numVertices; i++) {
 
-            nodos[i] = null;
-            
-            arcs[i].clear();      
+            nodos[i] = null;   
             arcs[i] = null;
          }
         
@@ -597,7 +595,7 @@
             numArcos -= arcs[posSrc].getSize();
   
             
-            arcs[posSrc].clear();
+            arcs[posSrc] = null;
             numVertices--;
             
             arcs[posSrc] = arcs[numVertices];

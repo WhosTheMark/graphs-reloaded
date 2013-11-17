@@ -1,10 +1,8 @@
 /*
- * Clase: MiCola
  * Descripcion: Clase que contiene las operaciones y la informacion de una
  *              cola.
  * Nombres: Marcos Campos 10-10108
  *          Andrea Salcedo 10-10666
- *          Grupo 28
  */
 
 public class MiCola<E> implements Cola<E> {
@@ -82,30 +80,6 @@ public class MiCola<E> implements Cola<E> {
         }
     }
     
-    /*
-     * Metodo: clear
-     * Descripcion: Elimina una cola.
-     * Parametros: this: La cola a eliminar.
-     * Precondicion: this es una cola valida.
-     * Postcondicion: tamanano = 0.
-     */
-    
-    public void clear() {
-        
-        if (tamano >= 1) {
-            
-            Caja<E> aux = primero.obtenerSig();
-            
-            while (aux != null) {
-                
-                primero.setSigCaja(aux.obtenerSig());
-                aux = null;
-                
-                aux = primero.obtenerSig();   
-            }                
-            tamano = 0;
-        }
-    }
     
     /*
      * Metodo: equals
