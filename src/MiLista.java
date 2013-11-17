@@ -1,3 +1,6 @@
+
+import java.util.Iterator;
+
 /*
  * Interfaz de listas.
  * Nombres: Marcos Campos 10-10108
@@ -7,6 +10,33 @@
    public class MiLista<E> extends ColeccionListaEnlazada<E> implements Lista<E> {
     
 
+        public class ListaItr implements Iterator<E>{
+        private ColeccionListaEnlazada<E> cabeza;
+        private Caja<E> anterior;
+        private Caja<E> actual;
+        
+        public ListaItr(MiLista<E> list){
+            actual = list.primero;
+        }
+        
+        public boolean hasNext(){
+            return (null != actual && actual.obtenerSig() != null);
+        }
+        
+        public E next(){
+            anterior = actual;
+            actual = actual.obtenerSig();
+            return actual.obtenerElem();
+        }
+        
+        public void remove(){
+            anterior.setSigCaja(actual.obtenerSig());
+            actual = anterior;  //Cuando se llame next no salta un elemento
+            --cabeza.tamano;
+        }
+        
+    }
+       
       public MiLista() {       
          super();
       }
@@ -114,5 +144,31 @@
          return list;
       
       }
+      
+      public E get(E element){
+         Caja<E> aux1 = primero;
+         Caja<E> aux2 = primero.obtenerSig();
+        
+         boolean cambia = false;
+         E elem;
+        
+         while (aux2 != null){
+            
+            elem = aux2.obtenerElem();
+            
+            if (elem.equals(element))
+                return elem;
 
-   }
+            aux1 = aux1.obtenerSig();
+            aux2 = aux2.obtenerSig();
+         }
+      
+         return null;
+            
+      }
+      
+      public Iterator<E> iterator() {
+        return new ListaItr(this);
+     }
+
+}

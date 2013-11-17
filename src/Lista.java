@@ -1,12 +1,11 @@
+
 /*
- * Clase: Lista
  * Descripcion: Interfaz que define el comportamiento de una lista.
  * Nombres: Marcos Campos 10-10108
  *          Andrea Salcedo 10-10666
- *          Grupo 28
  */
 
-   public interface Lista<E> {
+   public interface Lista<E> extends Iterable<E>{
       
       public boolean add(E element);
       
@@ -23,5 +22,6 @@
       public Object[] toArray();
       
       public Lista<E> clone();
-
+      
+      public E get(E element);
    }

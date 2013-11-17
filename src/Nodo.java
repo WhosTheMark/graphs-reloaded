@@ -60,6 +60,10 @@ import java.util.Objects;
          return id;
       }
       
+      public String getId(){
+          return id;
+      }
+      
       public void setPadre(Nodo nod) {
           padre = nod;
       }

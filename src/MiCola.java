@@ -17,14 +17,10 @@ public class MiCola<E> extends ColeccionListaEnlazada<E> implements Cola<E>{
         
     }
     
-    
-    /*
-     * Metodo: queue
-     * Descripcion: Encola un elemento.
-     * Parametros: this: la cola a la que se va a encolar E.
-     *             E: El elemento a encolar.
-     * Precondicion: true.
-     * Postcondicion: el tamano aumenta en uno /\ E esta encolado.
+    /**
+     * Encola un elemento.
+     * @param element elemento a encolar
+     * @return la cola con el elemento encolado.
      */
     
     public boolean add(E element) {
@@ -38,14 +34,10 @@ public class MiCola<E> extends ColeccionListaEnlazada<E> implements Cola<E>{
            
     }
     
-    
-    /*
-     * Metodo: equals
-     * Descripcion: Verifica si dos colas son iguales.
-     * Parametros: this: la cola a comparar.
-     *             cola: la otra cola a comparar.
-     * Precondicion: this y cola son colas validas.
-     * Postcondicion: Si son iguales devuelve true, de lo contratio, false.
+    /**
+     * Verifica si dos colas son iguales
+     * @param cola Cola a igualar.
+     * @return True si las colas son iguales.
      */
     
     public boolean equals(Cola<E> cola) {
@@ -77,14 +69,10 @@ public class MiCola<E> extends ColeccionListaEnlazada<E> implements Cola<E>{
         }
         
     }
-    
-    /*
-     * Metodo: dequeue
-     * Descripcion: Desencola un elemento y lo devuelve.
-     * Parametros: this: la cola a desencolar.
-     * Precondicion: this es una cola valida.
-     * Postcondicion: La cola contiene unicamente los elementos que tenia
-     *                originalmente menos E y conservan el mismo orden.
+
+    /**
+     * Desencola un elemento de la cola
+     * @return el elemento desencolado.
      */
     
     public E dequeue() {

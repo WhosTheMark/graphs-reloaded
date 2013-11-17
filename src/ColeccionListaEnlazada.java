@@ -1,12 +1,12 @@
 
-public abstract class ColeccionListaEnlazada<E> {
+public abstract class ColeccionListaEnlazada<E>{
     
     protected Caja<E> primero;
     protected int tamano;
     
     protected class Caja<E>{
         
-         private E elemento;
+         private final E elemento;
          private Caja<E> sig = null;
          
           
@@ -39,6 +39,7 @@ public abstract class ColeccionListaEnlazada<E> {
          }  
       }
 
+    
     public ColeccionListaEnlazada() {       
        tamano = 0;
        Caja<E> nuevaCaja = new Caja(null);
@@ -103,5 +104,6 @@ public abstract class ColeccionListaEnlazada<E> {
 
        return arreglo;
     }
+ 
     
 }

@@ -1,3 +1,4 @@
+
 /*
  * Descripcion: Clase que contiene las operaciones y la informacion de una
  *              cola.
@@ -5,7 +6,7 @@
  *          Andrea Salcedo 10-10666
  */
 
-public interface Cola<E> {
+public interface Cola<E>{
     
     public boolean add(E element);
        
@@ -15,6 +16,6 @@ public interface Cola<E> {
 
     public E dequeue();
 
-    public int getSize();
+    public int getSize();    
 
 }

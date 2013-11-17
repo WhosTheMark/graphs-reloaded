@@ -20,8 +20,6 @@
 
       public abstract boolean add(Nodo n);
       
-      public abstract void clear();
-      
       public abstract Object clone();
 
       public abstract boolean contains(String src, String dst, int costo);
@@ -124,6 +122,5 @@
          return ret;
       }
       
-      public abstract Nodo getNod(String nod);
    
    }
