@@ -1,46 +1,12 @@
 /*
- * Descripcion: Clase que contiene las operaciones y la informacion de una
- *              cola.
+ * Descripcion: contiene las operaciones y la informacion de una cola.
  * Nombres: Marcos Campos 10-10108
  *          Andrea Salcedo 10-10666
  */
 
-public class MiCola<E> implements Cola<E> {
+public class MiCola<E> extends MiLista<E> implements Cola<E>{
     
-    private Caja<E> primero;
     private Caja<E> ultimo;
-    private int tamano;
-    
-    
-    private class Caja<E> {
-        
-        private E elemento;
-        private Caja<E> sig = null;
-        
-        private Caja(E elem) {
-            elemento = elem;
-        }
-        
-        private void setSigCaja(Caja<E> sigCaja) {
-            sig = sigCaja;
-        }
-        
-        private Caja<E> obtenerSig() {
-            return sig;
-        }
-        
-        private E obtenerElem() {
-            return elemento;
-        }
-    }
-    
-    /*
-     * Metodo: MiCola
-     * Descripcion: Construye una cola vacio.
-     * Parametros: --
-     * Precondicion: true
-     * Postcondicion: tamanano = 0.
-     */
        
     public MiCola() {
         
@@ -67,17 +33,11 @@ public class MiCola<E> implements Cola<E> {
         
              
         Caja<E> nuevaCaja = new Caja(element);
-
-        if (nuevaCaja != null) {
-
-            ultimo.setSigCaja(nuevaCaja);          
-            ultimo = nuevaCaja;
-            tamano++;
-            return true;
-            
-        } else {
-            return false;
-        }
+        ultimo.setSigCaja(nuevaCaja);          
+        ultimo = nuevaCaja;
+        ++tamano;
+        return true;
+           
     }
     
     
@@ -105,13 +65,10 @@ public class MiCola<E> implements Cola<E> {
             
             boolean igual = true;
             
-            E elem1;
-            E elem2;
-            
             while (igual && aux1 != null) {
                 
-                elem1 = aux1.obtenerElem();
-                elem2 = aux2.obtenerElem();
+                E elem1 = aux1.obtenerElem();
+                E elem2 = aux2.obtenerElem();
                 
                 igual = elem1.equals(elem2);
                 
@@ -120,20 +77,6 @@ public class MiCola<E> implements Cola<E> {
             }
             return igual;
         }
-        
-    }
-
-    /*
-     * Metodo: isEmpty
-     * Descripcion: Verifica si la cola es vacia.
-     * Parametros: this: La cola a ver si es vacia.
-     * Precondicion: this es una cola valida.
-     * Postcondicion: isEmpty() == tamanano = 0.
-     */
-  
-    public boolean isEmpty() {
-        
-        return (tamano ==0);
         
     }
     
@@ -156,36 +99,26 @@ public class MiCola<E> implements Cola<E> {
             primero.setSigCaja(aux.obtenerSig());           
             elem = aux.obtenerElem();
             aux = null;
-            tamano--;
+            --tamano;
            
-            if (this.isEmpty()) {
-           
+            if (this.isEmpty()) 
                ultimo = primero;
-               
-            }
            
             return elem;
             
-            
-        } else {
-            
+        } else
             return null;
-        }
         
     }
     
-    /*
-     * Metodo: getSize
-     * Descripcion: Obtiene el tamano de la cola.
-     * Parametros: this: Cola a obtener tamano.
-     * Precondicion: this es una cola valida
-     * Postcondicion: getSize() = tamanano
-     */
-    
-    public int getSize() {
-        return tamano;
+    //Unsupported operation exception
+    public boolean remove(E element) {
+        return false;
     }
-   
     
+    //Nunca lo hemos usado. En algún caso su podría castear de lista a cola.
+    public Lista<E> clone(){
+        return null;
+    }
     
 }

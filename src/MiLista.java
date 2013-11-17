@@ -6,21 +6,21 @@
   
    public class MiLista<E> implements Lista<E> {
     
-      private Caja<E> primero;
-      private int tamano;
+      protected Caja<E> primero;
+      protected int tamano;
 
       /*
        * Modelo de representacion: lista simplemente enlazada 
        * con un centinela. La primera "caja" esta vacia.
        */
     
-      private class Caja<E>{
+      protected class Caja<E>{
         
          private E elemento;
          private Caja<E> sig = null;
          
           
-         private Caja(E elem) {
+         protected Caja(E elem) {
             elemento = elem;
          }
          
@@ -28,7 +28,7 @@
           * Asigna la siguiente caja de this.
           * @param sigCaja Caja a poner como siguiente
           */
-         private void setSigCaja(Caja<E> sigCaja) {
+         protected void setSigCaja(Caja<E> sigCaja) {
             sig = sigCaja;
          } 
          
@@ -36,7 +36,7 @@
           * Devuelve la siguiente caja de this.
           * @return la caja siguiente a this
           */
-         private Caja<E> obtenerSig(){
+         protected Caja<E> obtenerSig(){
             return sig;
          }
           
@@ -44,7 +44,7 @@
           * Obtiene el elemento de la caja.
           * @return el elemento de la caja.
           */
-         private E obtenerElem(){
+         protected E obtenerElem(){
             return elemento;
          }  
       }
