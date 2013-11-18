@@ -11,12 +11,13 @@ public class MiLista<E> extends ColeccionListaEnlazada<E> implements Lista<E> {
     
 
     public class ListaItr implements Iterator<E>{
-        private ColeccionListaEnlazada<E> cabeza;
+        private final ColeccionListaEnlazada<E> cabeza;
         private Caja<E> anterior;
         private Caja<E> actual;
         
         public ListaItr(MiLista<E> list){
             actual = list.primero;
+            cabeza = list;
         }
         
         public boolean hasNext(){

@@ -6,10 +6,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-/**
- *
- * @author marcos
- */
+
 public class MiListaTest {
     
     MiLista<Integer> listInt;

@@ -52,21 +52,9 @@ import java.util.Iterator;
          if (this.contains(n.getId()))
             return false;
             
-        if (nodos.length <= numVertices) {
+        if (nodos.length <= numVertices)
+           duplicarArreglo();            
 
-           int dobleTam = 2*nodos.length;
-           Nodo nodosDoble[] = new Nodo[dobleTam];
-
-           @SuppressWarnings("unchecked")
-           Lista<Arco> arcsDoble[] = new MiLista[dobleTam];
-
-           System.arraycopy(nodos, 0, nodosDoble, 0, nodos.length);
-           System.arraycopy(arcs, 0, arcsDoble, 0, nodos.length);
-
-           nodos = nodosDoble;
-           arcs = arcsDoble;              
-
-        }
 
         nodos[numVertices] = n;
         arcs[numVertices] = new MiLista();
@@ -76,6 +64,25 @@ import java.util.Iterator;
         return true;
         
       }
+      
+    /**
+     * Auxiliar para duplicar el tamano de los arreglos de nodos y arcos.
+     */
+    private void duplicarArreglo(){
+          
+        int dobleTam = 2*nodos.length;
+        Nodo nodosDoble[] = new Nodo[dobleTam];
+
+        @SuppressWarnings("unchecked")
+        Lista<Arco> arcsDoble[] = new MiLista[dobleTam];
+
+        System.arraycopy(nodos, 0, nodosDoble, 0, nodos.length);
+        System.arraycopy(arcs, 0, arcsDoble, 0, nodos.length);
+
+        nodos = nodosDoble;
+        arcs = arcsDoble;       
+          
+    }
 
     /**
      * Verifica si un arco pertenece al grafo.
@@ -289,16 +296,7 @@ import java.util.Iterator;
           
          if (posSrc >= 0) {
             
-            numArcos -= arcs[posSrc].getSize();
-            --numVertices;
-            
-            arcs[posSrc] = arcs[numVertices];
-            nodos[posSrc] = nodos[numVertices];            
-
-            arcs[numVertices] = null;
-            nodos[numVertices] = null;
-
-            ordenarNodos();
+             eliminarUnNodo(posSrc);
             
             for (int i = 0; i < numVertices; ++i) {
                 
@@ -316,6 +314,25 @@ import java.util.Iterator;
          } 
          
          return false;
+      }
+      
+      /**
+       * Auxiliar que elimina un nodo y sus nodos sucesores.
+       * @param posSrc Posicion del nodo en el arreglo
+       */
+      private void eliminarUnNodo(int posSrc){
+          
+        numArcos -= arcs[posSrc].getSize();
+        --numVertices;
+
+        arcs[posSrc] = arcs[numVertices];
+        nodos[posSrc] = nodos[numVertices];            
+
+        arcs[numVertices] = null;
+        nodos[numVertices] = null;
+
+        ordenarNodos();
+          
       }
       
     /**
@@ -371,11 +388,11 @@ import java.util.Iterator;
          return null;
       }
      
-      //Seria mejor hacer el ordenar mas simple uno para cuando se elimina 
+      //Seria mejor hacer dos ordenar mas simples uno para cuando se elimina 
       //y otro cuando se agrega (mas eficiente)
       
       /** 
-       * ordena los nodos del grafo usando bubbleSort.
+       * Ordena los nodos del grafo usando bubbleSort.
        */ 
       private void ordenarNodos() {
       
