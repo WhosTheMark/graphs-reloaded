@@ -50,6 +50,12 @@ import java.util.Objects;
         return hash;
     }
       
+    
+    public int compareTo(Object o){
+        Nodo nod = (Nodo) o;
+        return this.id.compareTo(nod.id);
+    }
+    
     /**
      * Convierte el nodo a String.
      * @return String representando el nodo.

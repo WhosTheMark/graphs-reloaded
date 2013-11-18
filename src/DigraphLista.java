@@ -34,7 +34,7 @@ import java.util.Iterator;
              
              int posSrc = this.busqueda(src);
              ++numArcos;
-             if (-1 != posSrc)
+             if (0 <= posSrc)
                 return arcs[posSrc].add(e);
 
          }
@@ -54,12 +54,8 @@ import java.util.Iterator;
             
         if (nodos.length <= numVertices)
            duplicarArreglo();            
-
-
-        nodos[numVertices] = n;
-        arcs[numVertices] = new MiLista();
         ++numVertices;
-        this.ordenarNodos();
+        ordenarAgregar(n);
 
         return true;
         
@@ -101,7 +97,7 @@ import java.util.Iterator;
             estaDst = arcs[posSrc].contains(arc);    
          }
 
-         return posSrc >= 0 && estaDst;
+         return estaDst;
       }
 
     /**
@@ -296,7 +292,10 @@ import java.util.Iterator;
           
          if (posSrc >= 0) {
             
-             eliminarUnNodo(posSrc);
+             numArcos -= arcs[posSrc].getSize();
+             --numVertices;
+             
+             ordenarEliminar(posSrc);
             
             for (int i = 0; i < numVertices; ++i) {
                 
@@ -314,26 +313,7 @@ import java.util.Iterator;
          } 
          
          return false;
-      }
-      
-      /**
-       * Auxiliar que elimina un nodo y sus nodos sucesores.
-       * @param posSrc Posicion del nodo en el arreglo
-       */
-      private void eliminarUnNodo(int posSrc){
-          
-        numArcos -= arcs[posSrc].getSize();
-        --numVertices;
-
-        arcs[posSrc] = arcs[numVertices];
-        nodos[posSrc] = nodos[numVertices];            
-
-        arcs[numVertices] = null;
-        nodos[numVertices] = null;
-
-        ordenarNodos();
-          
-      }
+      } 
       
     /**
      * busca todos los predecesores de un nodo.
@@ -387,39 +367,37 @@ import java.util.Iterator;
             
          return null;
       }
-     
-      //Seria mejor hacer dos ordenar mas simples uno para cuando se elimina 
-      //y otro cuando se agrega (mas eficiente)
       
-      /** 
-       * Ordena los nodos del grafo usando bubbleSort.
-       */ 
-      private void ordenarNodos() {
+      /**
+       * Ordena el nodo que se acaba de agregar.
+       */
+      private void ordenarAgregar(Nodo newNode){
+          
+          int i;
+          
+          for (i = numVertices -1 ; 
+                  i >= 1 && newNode.compareTo(nodos[i-1]) < 0 ; --i){
+                nodos[i] = nodos[i-1];
+                arcs[i] = arcs[i-1];
+          }
+          
+          nodos[i] = newNode;
+          arcs[i] = new MiLista();   
+      }
       
-         for (int i = 0; i < numVertices - 1; ++i) {
-         
-            boolean ordenado = true;
-                 
-            for (int k = numVertices - 1; k >= i+1; --k) {
-
-               String str1 = nodos[k].getId();
-               String str2 = nodos[k-1].getId();
-              
-               if ((str1.compareTo(str2)) < 0) {
-
-                        Nodo auxNod = nodos[k-1];
-                        nodos[k-1] = nodos[k];
-                        nodos[k] = auxNod;
-                        Lista<Arco> auxArc = arcs[k-1];
-                        arcs[k-1] = arcs[k];
-                        arcs[k] = auxArc;
-                        ordenado = false;
-                }     
-            }
-            
-            if (ordenado)
-               break; 
-         }
+      /**
+       * Ordena los nodos al eliminar.
+       * @param pos la posicion del nodo que se desea eliminar.
+       */
+      
+      private void ordenarEliminar(int pos){
+          for (int i = pos; i < numVertices; ++i){
+                nodos[i] = nodos[i+1];
+                arcs[i] = arcs[i+1];
+          }
+          
+          nodos[numVertices] = null;
+          arcs[numVertices] = null;
       }
       
       /**
@@ -454,8 +432,7 @@ import java.util.Iterator;
          
          return grafo;  
       }
-      
-      
+           
       /**
        * Borra las marcas de los nodos.
        */
