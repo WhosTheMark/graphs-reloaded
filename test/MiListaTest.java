@@ -171,7 +171,6 @@ public class MiListaTest {
     /**
      * Elimnar un elemento que esta repetido.
      */
-    
     @Test
     public void testRemove3() {
         System.out.println("remove3");
@@ -183,7 +182,6 @@ public class MiListaTest {
         assertTrue(success && 1 == listInt.getSize());
 
     }
-    
     
     /**
      * Eliminar de una lista vacia.
@@ -279,5 +277,41 @@ public class MiListaTest {
             assertEquals(i,j--);
 
     }
+    
+    /**
+     * Contains de una lista vacia.
+     */
+    @Test
+    public void testContains(){
+        System.out.println("contains");
+        
+        boolean esta = listInt.contains(4);
+        assertFalse(esta);  
+    }
+    
+    /**
+     * Contains de una lista.
+     */
+    @Test
+    public void testContains2(){
+        System.out.println("contains2");
+        
+        listInt.add(4);
+        boolean esta = listInt.contains(4);
+        assertTrue(esta);
+    }
+    
+    /**
+     * Contains de una lista que no tiene al elemento.
+     */
+    @Test
+    public void testContains3(){
+        System.out.println("contains3");
+        
+        listInt.add(5);
+        boolean esta = listInt.contains(4);
+        assertFalse(esta);
+    }
+    
     
 }
