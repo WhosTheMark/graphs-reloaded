@@ -10,8 +10,8 @@ import java.util.Objects;
    public class Nodo implements Cloneable {
 
       private String id = null;
-      private Nodo padre = null;
-      private boolean visitado = false;
+      private int tiempo = 0;
+      private boolean visitado = false;      
        
       public Nodo(String i) {
          id = new String(i);
@@ -70,12 +70,12 @@ import java.util.Objects;
           return id;
       }
       
-      public void setPadre(Nodo nod) {
-          padre = nod;
+      public void setTiempo(int temps) {
+          tiempo = temps;
       }
 
-      public Nodo getPadre() {
-          return padre;
+      public int getTiempo() {
+          return tiempo;
       }
       
       public void setVisitado(boolean bool) {

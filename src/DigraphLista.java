@@ -12,6 +12,8 @@ import java.util.Iterator;
       private  Nodo nodos[];
       private  Lista<Arco> arcs[];
       public final int tam = 100;
+      private String inicio;
+      private String fin;
 
       public DigraphLista() {
          super();
@@ -41,6 +43,7 @@ import java.util.Iterator;
              
          return false;
       }
+    
     
     /**
      * Agrega un Nodo al grafo.
@@ -441,7 +444,26 @@ import java.util.Iterator;
          for (int i = 0; i < numVertices; ++i) {
          
                nodos[i].setVisitado(false);
-               nodos[i].setPadre(null);
+               nodos[i].setTiempo(0);
          }
-      }
+      }      
+      
+        public String getInicio() {
+            return inicio;
+        }
+
+        public String getFin() {
+            return fin;
+        }
+
+        public void setInicio(String inicio) {
+            this.inicio = inicio;
+        }
+
+        public void setFin(String fin) {
+            this.fin = fin;
+        }
+    
+    
+    
    }
