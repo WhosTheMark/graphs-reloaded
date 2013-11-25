@@ -1,6 +1,4 @@
 
-import java.util.Objects;
-
 /*
  * Descripcion: Operaciones e informacion de un nodo.
  * Autores: Marcos Campos 10-10108
@@ -10,8 +8,8 @@ import java.util.Objects;
    public class Nodo implements Cloneable {
 
       private String id = null;
-      private Nodo padre = null;
-      private boolean visitado = false;
+      private int tiempo = 0;
+      private boolean visitado = false;      
        
       public Nodo(String i) {
          id = new String(i);
@@ -42,13 +40,6 @@ import java.util.Objects;
          } 
          return false;
       }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 23 * hash + Objects.hashCode(this.id);
-        return hash;
-    }
       
     
     public int compareTo(Object o){
@@ -70,12 +61,12 @@ import java.util.Objects;
           return id;
       }
       
-      public void setPadre(Nodo nod) {
-          padre = nod;
+      public void setTiempo(int temps) {
+          tiempo = temps;
       }
 
-      public Nodo getPadre() {
-          return padre;
+      public int getTiempo() {
+          return tiempo;
       }
       
       public void setVisitado(boolean bool) {

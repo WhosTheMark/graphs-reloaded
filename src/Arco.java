@@ -1,6 +1,4 @@
 
-import java.util.Objects;
-
 /*
  * Descripcion: Operaciones e informacion de un arco.
  * Autores: Marcos Campos 10-10108
@@ -68,13 +66,6 @@ import java.util.Objects;
        
       }
 
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 23 * hash + Objects.hashCode(this.src);
-        hash = 23 * hash + Objects.hashCode(this.dst);
-        return hash;
-    }
       
     /**
      * Convierte el arco a String.
