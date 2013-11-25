@@ -1,6 +1,4 @@
 
-import java.util.Objects;
-
 /*
  * Descripcion: Operaciones e informacion de un nodo.
  * Autores: Marcos Campos 10-10108
@@ -42,13 +40,6 @@ import java.util.Objects;
          } 
          return false;
       }
-
-    @Override
-    public int hashCode() {
-        int hash = 7;
-        hash = 23 * hash + Objects.hashCode(this.id);
-        return hash;
-    }
       
     
     public int compareTo(Object o){
