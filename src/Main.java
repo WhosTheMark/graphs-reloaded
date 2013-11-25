@@ -27,7 +27,8 @@ public class Main {
             fila = entrada.nextInt();
             columna = entrada.nextInt();
             
-            entrada.nextLine();
+            if (nivel != 0)
+                entrada.nextLine();
         }
     }
     
