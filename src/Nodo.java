@@ -5,11 +5,13 @@
  *          Andrea Salcedo 10-10666
  */
 
-   public class Nodo implements Cloneable {
+   public class Nodo implements Comparable<Nodo>, Cloneable {
 
       private String id = null;
-      private int tiempo = 0;
-      private boolean visitado = false;      
+      private int costo = 0;
+      private boolean visitado = false;
+      private int numCaminos = 0;
+      private int costoAcc = 0;
        
       public Nodo(String i) {
          id = new String(i);
@@ -41,11 +43,14 @@
          return false;
       }
       
-    
-    public int compareTo(Object o){
+    public int compareToId(Object o){
         Nodo nod = (Nodo) o;
         return this.id.compareTo(nod.id);
     }
+    
+       public int compareTo(Nodo nod) {
+            return (this.costoAcc - nod.costoAcc);
+       }
     
     /**
      * Convierte el nodo a String.
@@ -61,14 +66,6 @@
           return id;
       }
       
-      public void setTiempo(int temps) {
-          tiempo = temps;
-      }
-
-      public int getTiempo() {
-          return tiempo;
-      }
-      
       public void setVisitado(boolean bool) {
 	  visitado = bool;
       }
@@ -76,4 +73,31 @@
       public boolean getVisitado() {
 	  return visitado; 
       } 
+
+    public int getCosto() {
+        return costo;
+    }
+
+    public int getNumCaminos() {
+        return numCaminos;
+    }
+
+    public void setCosto(int costo) {
+        this.costo = costo;
+    }
+
+    public void setNumCaminos(int numCaminos) {
+        this.numCaminos = numCaminos;
+    }
+
+    public int getCostoAcc() {
+        return costoAcc;
+    }
+
+    public void setCostoAcc(int costoAcc) {
+        this.costoAcc = costoAcc;
+    }
+      
+      
+      
    }
