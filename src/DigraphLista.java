@@ -18,39 +18,39 @@ import java.util.Iterator;
          nodos = new Nodo[tam];
          arcs = (Lista<Arco>[]) new MiLista[tam];
       }
+      
+      public DigraphLista(int n) {
+         super();
+         nodos = new Nodo[n];
+         arcs = (Lista<Arco>[]) new MiLista[n];
+      }
 
     /**
      * Agrega un Arco al grafo. Supone que los nodos ya estan agregados.
      * @param e arco a agregar. 
      * @return True si se agrego con exito.
+     * NO VERIFICA SI ESTA YA AGREGADO!
      */
       public  boolean add(Arco e){
+              
+        int posSrc = this.busqueda(e.getSrc());
         
-         String src = e.getSrc();
-         String dst = e.getDst();
-         int costo = e.getCosto();    
-         
-         if (!(this.contains(src,dst,costo))) {
-             
-             int posSrc = this.busqueda(src);
-             ++numArcos;
-             if (0 <= posSrc)
-                return arcs[posSrc].add(e);
-
-         }
-             
+        if (0 <= posSrc){
+           ++numArcos;
+           return arcs[posSrc].add(e);
+        }     
+        
          return false;
       }
+    
     
     /**
      * Agrega un Nodo al grafo.
      * @param n nodo a agregar
      * @return True si se agrego con exito
+     * NO VERIFICA SI YA ESTA AGREGADO!
      */
       public  boolean add(Nodo n){
- 
-         if (this.contains(n.getId()))
-            return false;
             
         if (nodos.length <= numVertices)
            duplicarArreglo();            
@@ -441,7 +441,8 @@ import java.util.Iterator;
          for (int i = 0; i < numVertices; ++i) {
          
                nodos[i].setVisitado(false);
-               nodos[i].setPadre(null);
          }
-      }
+      }      
+
+    
    }

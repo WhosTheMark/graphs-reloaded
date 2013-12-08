@@ -59,56 +59,35 @@
        * Descripcion: Retorna el in-degree del nodo dado. Si no existe,
        *              retorna -1.
        * Parametros: this: Grafo dado.
-                     nodo: Nodo del cual se calcula su in-degree.
-       * Precondicion: this es un grafo valido.
-       * Postcondicion: (this.contains(nodo) ==> Se devuelve el numero de
-       *                                         nodos que preceden a nodo
-       *                                         en el grafo.)
-       *                /\ (!this.contains(nodo) ==> Retorna -1.)
        */
    
       public int getInDegree(String nodo){
     
-         if (this.contains(nodo)) {
+         Lista<Nodo> list = this.getPreds(nodo);
+          
+         if (null != list)
+            return list.getSize();     
+            
+         return -1;
          
-            Lista<Nodo> list;
-            list = this.getPreds(nodo);
-            
-            return list.getSize();            
-            
-         } else {
-            
-               return -1;
-         }
       }
       
       /*
        * Metodo: getOutDegree
        * Descripcion: Retorna el out-degree del nodo dado. Si no existe,
        *              retorna -1.
-       * Parametros: this: Grafo dado.
-                     nodo: Nodo del cual se calcula su out-degree.
-       * Precondicion: this es un grafo valido.
-       * Postcondicion: (this.contains(nodo) ==> Se devuelve el numero de
-       *                                         nodos que suceden a nodo
-       *                                         en el grafo.)
-       *                /\ (!this.contains(nodo) ==> Retorna -1.)
+       * Parametros: this: Nodo dado.
        */
        
       public int getOutDegree(String nodo){
         
-         if (this.contains(nodo)) {
-           
-            Lista<Nodo> list;
-            list = this.getSucs(nodo);
-            
+         Lista<Nodo> list = this.getSucs(nodo);
+          
+         if (null != list) 
             return list.getSize();
-         
-         } else {
-               
-               return -1;
-         }
-        
+
+         return -1;
+          
       }
        
       public abstract boolean remove(String src, String dst, int costo);
