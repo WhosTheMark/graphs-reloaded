@@ -70,6 +70,7 @@ public class Main {
         Nodo nodInicio = maze.get(inicio);
         String fin = maze.getFin();
         nodInicio.setNumCaminos(1);
+        nodInicio.setCostoAcc(nodInicio.getCosto());
         queue.add(nodInicio);
         Nodo nod = null;
         
