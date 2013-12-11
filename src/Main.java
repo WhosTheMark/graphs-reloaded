@@ -79,7 +79,10 @@ public class Main {
         nodFin.setCosto(costoFinal+1);
         nodInicio.setNumCaminos(1);
         nodInicio.setCostoAcc(nodInicio.getCosto());
-        queue.add(nodInicio);
+        if (nodInicio.getCosto() != 0)
+            queue.add(nodInicio);
+        else 
+            manejadorDeCeros(nodInicio,maze,0,1,queue);
         Nodo nod = null;
         
         //Siempre voy a encontrar el nodo final.
@@ -143,7 +146,7 @@ public class Main {
             MiLista<Nodo> sucCeros = (MiLista) maze.getSucs(c.getId());
 
             //Para los sucesores de cada cero agrego el camino/peso 
-            //a los tros nodos que no son parte del conjunto de 0s
+            //a los otros nodos que no son parte del conjunto de 0s
 
             for (Nodo sucC: sucCeros){
 
@@ -158,6 +161,7 @@ public class Main {
                         int numCaminosSuc = sucC.getNumCaminos();
                         sucC.setNumCaminos(numCaminosSuc + caminosActual * numCaminos);
                 }
+
             }
         }
     }
