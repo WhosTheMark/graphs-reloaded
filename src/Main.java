@@ -99,7 +99,7 @@ public class Main {
             
             //Acumulado actual.
             int accActual = nod.getCostoAcc();
-            int caminosActual = nod.getNumCaminos();
+            long caminosActual = nod.getNumCaminos();
             
             for(Nodo suc : sucesores) {
 
@@ -119,7 +119,7 @@ public class Main {
                 //Si ha sido visitado y llegar a el me cuesta lo mismo.    
                 } else if (suc.getCostoAcc() == (accActual + suc.getCosto())){
                     if (suc.getCosto() != 0){
-                        int numCaminosSuc = suc.getNumCaminos();
+                        long numCaminosSuc = suc.getNumCaminos();
                         suc.setNumCaminos(numCaminosSuc + caminosActual);
                     } else 
                         manejadorDeCeros(suc,maze,accActual,caminosActual,queue);
@@ -133,7 +133,7 @@ public class Main {
     }
 
     private static void manejadorDeCeros(Nodo nod, Digraph maze, int accActual, 
-            int caminosActual, FibHeap<Nodo> queue){
+            long caminosActual, FibHeap<Nodo> queue){
                 
         MiLista<Nodo> ceros = buscarCeros(nod,maze,accActual);
         nod.setVisitado(false);
@@ -158,7 +158,7 @@ public class Main {
                 } else if (sucC.getCostoAcc() == (accActual + sucC.getCosto()) 
                         && sucC.getCosto() != 0){
 
-                        int numCaminosSuc = sucC.getNumCaminos();
+                        long numCaminosSuc = sucC.getNumCaminos();
                         sucC.setNumCaminos(numCaminosSuc + caminosActual * numCaminos);
                 }
 

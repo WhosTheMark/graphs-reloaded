@@ -10,7 +10,7 @@
       private String id = null;
       private int costo = 0;
       private boolean visitado = false;
-      private int numCaminos = 0;
+      private long numCaminos = 0;
       private int costoAcc = 0;
        
       public Nodo(String i) {
@@ -78,7 +78,7 @@
         return costo;
     }
 
-    public int getNumCaminos() {
+    public long getNumCaminos() {
         return numCaminos;
     }
 
@@ -86,7 +86,7 @@
         this.costo = costo;
     }
 
-    public void setNumCaminos(int numCaminos) {
+    public void setNumCaminos(long numCaminos) {
         this.numCaminos = numCaminos;
     }
 
