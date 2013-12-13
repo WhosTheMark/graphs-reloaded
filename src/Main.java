@@ -135,15 +135,18 @@ public class Main {
     private static void manejadorDeCeros(Nodo nod, Digraph maze, int accActual, 
             long caminosActual, FibHeap<Nodo> queue){
                 
-        MiLista<Nodo> ceros = buscarCeros(nod,maze,accActual);
+        MiLista<Nodo> ceros = buscarCeros(nod,maze,accActual);            
+        Object[] arrCeros = ceros.toArray();
+        
+        Integer[] arrNumCaminos = enumerarCaminos(nod,arrCeros,maze);
+        
         nod.setVisitado(false);
 
           //Por cada cero adjacente busco la cantidad de caminos
 
-        for (Nodo c : ceros){
-            c.setVisitado(false);
-            int numCaminos = enumerarCaminos(nod,c,maze);
-            MiLista<Nodo> sucCeros = (MiLista) maze.getSucs(c.getId());
+        for (int i = 0; i < arrCeros.length; ++i){
+            ((Nodo) arrCeros[i]).setVisitado(false);
+            MiLista<Nodo> sucCeros = (MiLista) maze.getSucs(((Nodo)arrCeros[i]).getId());
 
             //Para los sucesores de cada cero agrego el camino/peso 
             //a los otros nodos que no son parte del conjunto de 0s
@@ -152,14 +155,14 @@ public class Main {
 
                 if(sucC.getNumCaminos() == 0 && sucC.getCosto() != 0){                                    
                     sucC.setCostoAcc(accActual+sucC.getCosto());
-                    sucC.setNumCaminos(caminosActual*numCaminos);
+                    sucC.setNumCaminos(caminosActual*arrNumCaminos[i]);
                     queue.add(sucC);
 
                 } else if (sucC.getCostoAcc() == (accActual + sucC.getCosto()) 
                         && sucC.getCosto() != 0){
 
                         long numCaminosSuc = sucC.getNumCaminos();
-                        sucC.setNumCaminos(numCaminosSuc + caminosActual * numCaminos);
+                        sucC.setNumCaminos(numCaminosSuc + caminosActual * arrNumCaminos[i]);
                 }
 
             }
@@ -196,10 +199,16 @@ public class Main {
         return lista;
     }
     
-    private static int enumerarCaminos(Nodo nodInic, Nodo nodFin, Digraph grafo){
+    private static Integer[] enumerarCaminos(Nodo nodInic, Object[] finales, Digraph grafo){
         
-        if (nodInic.equals(nodFin))
-            return 1;
+        Integer[] arrInt = new Integer[finales.length];
+
+        for(int i = 0; i < arrInt.length; ++i){
+            if (nodInic.equals(finales[i]))
+                arrInt[i] = 1;
+            else 
+                arrInt[i] = 0;
+        }
         
         Stack<Nodo> stackNodo = new Stack();
         Stack<Iterator<Nodo>> stackIter = new Stack();
@@ -207,8 +216,6 @@ public class Main {
         stackNodo.add(nodInic);
         Iterator<Nodo> itr = grafo.getSucs(nodInic.getId()).iterator();
         stackIter.add(itr);
-        
-        int contador = 0;
         
         while (!stackNodo.empty()){
 
@@ -218,12 +225,18 @@ public class Main {
                 
                 Nodo suc = itrActual.next();
                 
-                if(suc.equals(nodFin)){  
-                    ++contador;
-                } else if(suc.getCosto() == 0 && !stackNodo.contains(suc)){
+                if (suc.getCosto() == 0 && !stackNodo.contains(suc)){
+                    
+                    int i = 0;
+
+                    while(!suc.equals(finales[i]))
+                        ++i;
+
+                    ++arrInt[i];
                     stackNodo.add(suc);
                     itr = grafo.getSucs(suc.getId()).iterator();
                     stackIter.add(itr);
+                    
                 }
                 
             } else {
@@ -232,12 +245,12 @@ public class Main {
                 stackNodo.pop();
                 
             }
-            
-            
+
         }
         
-        return contador;
+        return arrInt;
     }
+    
     
     
     public static void main(String[] args) {
