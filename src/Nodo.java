@@ -10,8 +10,8 @@
       private String id = null;
       private int costo = 0;
       private boolean visitado = false;
-      private long numCaminos = 0;
-      private int costoAcc = 0;
+      private int costoAcc = Integer.MAX_VALUE;
+      private Nodo padre = null;
        
       public Nodo(String i) {
          id = new String(i);
@@ -78,16 +78,8 @@
         return costo;
     }
 
-    public long getNumCaminos() {
-        return numCaminos;
-    }
-
     public void setCosto(int costo) {
         this.costo = costo;
-    }
-
-    public void setNumCaminos(long numCaminos) {
-        this.numCaminos = numCaminos;
     }
 
     public int getCostoAcc() {
@@ -96,6 +88,14 @@
 
     public void setCostoAcc(int costoAcc) {
         this.costoAcc = costoAcc;
+    }
+
+    public Nodo getPadre() {
+        return padre;
+    }
+
+    public void setPadre(Nodo padre) {
+        this.padre = padre;
     }
       
       

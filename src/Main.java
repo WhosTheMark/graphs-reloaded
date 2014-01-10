@@ -1,9 +1,6 @@
 
 import java.io.*;
-import java.util.Iterator;
 import java.util.Scanner;
-import java.util.Stack;
-
 
 public class Main {
     
@@ -14,11 +11,9 @@ public class Main {
         int columna = entrada.nextInt();
                         
         DigraphLista maze = createMaze(entrada,fila,columna);
-        String resultado = dijkstra(maze);
-
-        Nodo nodInic = maze.get(maze.getInicio());
-        Nodo nodFin = maze.get(maze.getFin());
+        String resultado = bellmanFord(maze,fila*columna); //dijkstra(maze);
         
+        System.out.println(resultado);
         salida.write(resultado);
         salida.newLine();
 
@@ -66,192 +61,67 @@ public class Main {
             }
         return grafo;
     }
+     
     
-    
-    private static String dijkstra(DigraphLista maze){
+    private static String bellmanFord(DigraphLista maze, int size){
         
-        FibHeap<Nodo> queue = new FibHeap();
+        MiCola<Nodo> nodosActuales = new MiCola();
+        MiCola<Nodo> nodosExpandidos = new MiCola();
         String inicio = maze.getInicio();
         Nodo nodInicio = maze.get(inicio);
-        String fin = maze.getFin();
-        Nodo nodFin = maze.get(fin);
-        int costoFinal = nodFin.getCosto();
-        nodFin.setCosto(costoFinal+1);
-        nodInicio.setNumCaminos(1);
         nodInicio.setCostoAcc(nodInicio.getCosto());
-        if (nodInicio.getCosto() != 0)
-            queue.add(nodInicio);
-        else 
-            manejadorDeCeros(nodInicio,maze,0,1,queue);
-        Nodo nod = null;
+        nodosActuales.add(nodInicio);
+        int contadorCiclos = 0;
+        Integer penultimo = null; 
+        Integer ultimo = null;
+        String Fin = maze.getFin();
+        Nodo nodFin = maze.get(Fin);
         
-        //Siempre voy a encontrar el nodo final.
-        
-        while (true){
-            
-            nod = queue.extraerMin();
-            
-            //Si es el final salgo
-            if (nod.getId().equals(fin))
-                break;
-            
-            MiLista<Nodo> sucesores = (MiLista) maze.getSucs(nod.getId());
-            
-            //Acumulado actual.
-            int accActual = nod.getCostoAcc();
-            long caminosActual = nod.getNumCaminos();
-            
-            for(Nodo suc : sucesores) {
+        for(;contadorCiclos <= size && !nodosActuales.isEmpty(); ++contadorCiclos){
 
-                //Si no ha sido visitado 
-                if(suc.getNumCaminos() == 0){
-                    
-                    // Si el nodo no tiene peso 0, 
-                    if (suc.getCosto() != 0){
-                        suc.setCostoAcc(accActual+suc.getCosto());
-                        suc.setNumCaminos(caminosActual);
-                        queue.add(suc);
+            while(!nodosActuales.isEmpty()){
+                Nodo nod = nodosActuales.dequeue();
+                MiLista<Nodo> sucesores = (MiLista) maze.getSucs(nod.getId());
+
+                for(Nodo suc : sucesores){
+
+                    if((null == nod.getPadre() || suc != nod.getPadre()) &&
+                            suc.getCostoAcc() > nod.getCostoAcc() + suc.getCosto()){
                         
-                     //Si el nodo tiene peso 0 busco todos los 0 adyacentes   
-                    } else
-                        manejadorDeCeros(suc,maze,accActual,caminosActual,queue);                        
-                    
-                //Si ha sido visitado y llegar a el me cuesta lo mismo.    
-                } else if (suc.getCostoAcc() == (accActual + suc.getCosto())){
-                    if (suc.getCosto() != 0){
-                        long numCaminosSuc = suc.getNumCaminos();
-                        suc.setNumCaminos(numCaminosSuc + caminosActual);
-                    } else 
-                        manejadorDeCeros(suc,maze,accActual,caminosActual,queue);
-                    
+                        suc.setCostoAcc(nod.getCostoAcc() + suc.getCosto());
+                        suc.setPadre(nod);
+                        if (!nodosExpandidos.contains(suc))
+                           nodosExpandidos.add(suc);
+
+                    } else if (!nodosExpandidos.contains(suc) &&
+                           suc.getCostoAcc() == nod.getCostoAcc() + suc.getCosto()){
+                        suc.setPadre(nod);
+                        nodosExpandidos.add(suc);
+                    }
                 }
+                        
             }
             
+            MiCola<Nodo> temporal = nodosActuales;
+            nodosActuales = nodosExpandidos;
+            nodosExpandidos = temporal;
+            
+            if(contadorCiclos == size - 1)
+                penultimo = nodFin.getCostoAcc();
+            
+            if(contadorCiclos == size)
+                ultimo = nodFin.getCostoAcc();
+            
         }
         
-        return nod.getNumCaminos() + " " + (nod.getCostoAcc() -1);
+
+        
+        if(null != penultimo && null != ultimo && !ultimo.equals(penultimo))
+            return "-INF";
+        
+        
+        return String.valueOf(nodFin.getCostoAcc());
     }
-
-    private static void manejadorDeCeros(Nodo nod, Digraph maze, int accActual, 
-            long caminosActual, FibHeap<Nodo> queue){
-                
-        MiLista<Nodo> ceros = buscarCeros(nod,maze,accActual);            
-        Object[] arrCeros = ceros.toArray();
-        
-        Integer[] arrNumCaminos = enumerarCaminos(nod,arrCeros,maze);
-        
-        nod.setVisitado(false);
-
-          //Por cada cero adjacente busco la cantidad de caminos
-
-        for (int i = 0; i < arrCeros.length; ++i){
-            ((Nodo) arrCeros[i]).setVisitado(false);
-            MiLista<Nodo> sucCeros = (MiLista) maze.getSucs(((Nodo)arrCeros[i]).getId());
-
-            //Para los sucesores de cada cero agrego el camino/peso 
-            //a los otros nodos que no son parte del conjunto de 0s
-
-            for (Nodo sucC: sucCeros){
-
-                if(sucC.getNumCaminos() == 0 && sucC.getCosto() != 0){                                    
-                    sucC.setCostoAcc(accActual+sucC.getCosto());
-                    sucC.setNumCaminos(caminosActual*arrNumCaminos[i]);
-                    queue.add(sucC);
-
-                } else if (sucC.getCostoAcc() == (accActual + sucC.getCosto()) 
-                        && sucC.getCosto() != 0){
-
-                        long numCaminosSuc = sucC.getNumCaminos();
-                        sucC.setNumCaminos(numCaminosSuc + caminosActual * arrNumCaminos[i]);
-                }
-
-            }
-        }
-    }
-    
-    private static MiLista<Nodo> buscarCeros(Nodo nodInic, Digraph grafo, int costoAcc){
-        
-        MiLista <Nodo> lista  = new MiLista();
-        lista.add(nodInic);
-        MiCola<Nodo> cola = new MiCola();
-        nodInic.setCostoAcc(costoAcc);
-        nodInic.setVisitado(true);
-        
-        cola.add(nodInic);
-        
-        while(!cola.isEmpty()){
-            
-            Nodo aux = cola.dequeue();
-            MiLista<Nodo> sucs = (MiLista) grafo.getSucs(aux.toString());
-            
-            for(Nodo suc : sucs){
-                if (suc.getCosto() == 0 && !suc.getVisitado()){
-                    suc.setCostoAcc(costoAcc);
-                    suc.setVisitado(true);
-                    lista.add(suc);
-                    cola.add(suc);
-                }
-            }
-            
-            
-        }
-
-        return lista;
-    }
-    
-    private static Integer[] enumerarCaminos(Nodo nodInic, Object[] finales, Digraph grafo){
-        
-        Integer[] arrInt = new Integer[finales.length];
-
-        for(int i = 0; i < arrInt.length; ++i){
-            if (nodInic.equals(finales[i]))
-                arrInt[i] = 1;
-            else 
-                arrInt[i] = 0;
-        }
-        
-        Stack<Nodo> stackNodo = new Stack();
-        Stack<Iterator<Nodo>> stackIter = new Stack();
-        
-        stackNodo.add(nodInic);
-        Iterator<Nodo> itr = grafo.getSucs(nodInic.getId()).iterator();
-        stackIter.add(itr);
-        
-        while (!stackNodo.empty()){
-
-            Iterator<Nodo> itrActual = stackIter.peek();
-            
-            if (itrActual.hasNext()){
-                
-                Nodo suc = itrActual.next();
-                
-                if (suc.getCosto() == 0 && !stackNodo.contains(suc)){
-                    
-                    int i = 0;
-
-                    while(!suc.equals(finales[i]))
-                        ++i;
-
-                    ++arrInt[i];
-                    stackNodo.add(suc);
-                    itr = grafo.getSucs(suc.getId()).iterator();
-                    stackIter.add(itr);
-                    
-                }
-                
-            } else {
-                
-                stackIter.pop();
-                stackNodo.pop();
-                
-            }
-
-        }
-        
-        return arrInt;
-    }
-    
-    
     
     public static void main(String[] args) {
         
