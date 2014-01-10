@@ -93,7 +93,7 @@ public class Main {
                         if (!nodosExpandidos.contains(suc))
                            nodosExpandidos.add(suc);
 
-                    } else if (!nodosExpandidos.contains(suc) &&
+                    } else if (suc.getPadre() != nod && !nodosExpandidos.contains(suc) &&
                            suc.getCostoAcc() == nod.getCostoAcc() + suc.getCosto()){
                         suc.setPadre(nod);
                         nodosExpandidos.add(suc);
