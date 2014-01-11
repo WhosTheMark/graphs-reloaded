@@ -92,13 +92,20 @@ public class Main {
                         if (!nodosExpandidos.contains(suc))
                            nodosExpandidos.add(suc);
 
+                    } else if(suc.getPadre() != nod && suc.getCostoAcc() < 0 &&
+                           suc.getCostoAcc() == nod.getCostoAcc() + suc.getCosto()
+                            && suc != nod.getPadre() && nod.getCostoAcc() != 0
+                            && suc.getCostoAcc() + nod.getCostoAcc() != 0){ 
+                        
+                        
+                        return "-INF";
+                    
                     } else if (suc.getPadre() != nod && 
                             (suc.getPadre() == null || suc.getPadre().getCosto() < nod.getCosto()) &&
                            suc.getCostoAcc() == nod.getCostoAcc() + suc.getCosto()
                             && suc != nod.getPadre()){
                         
-                        if(suc.getCostoAcc() < 0)
-                            return "-INF";
+                        
                         
                         suc.setPadre(nod);
                         
@@ -130,9 +137,19 @@ public class Main {
             }
         }
         
-        if(hayCiclo)
-            return "-INF";
-        
+        if(hayCiclo) {
+
+            int acc = 0;
+            while(act.getVisitado()) {
+                acc += act.getCosto(); 
+                act.setVisitado(false);
+                act = act.getPadre();
+            }
+            
+            if (acc < 0)
+               
+                return "-INF";
+        }
         
         return String.valueOf(nodFin.getCostoAcc());
     }
