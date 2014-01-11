@@ -11,6 +11,7 @@ public class Main {
         int columna = entrada.nextInt();
                         
         DigraphLista maze = createMaze(entrada,fila,columna);
+        preprocesar(maze);
         String resultado = bellmanFord(maze,fila*columna); 
         
         System.out.println(resultado);
@@ -134,6 +135,94 @@ public class Main {
         
         
         return String.valueOf(nodFin.getCostoAcc());
+    }
+    
+    private static void preprocesar(DigraphLista maze){
+        
+        MiCola<Nodo> queue = new MiCola();
+        String inicio = maze.getInicio();
+        Nodo nodInicio = maze.get(inicio);
+        queue.add(nodInicio);
+        nodInicio.setVisitado(true);
+        
+        if(nodInicio.getCosto() == 0)
+            manejarCeros(maze,nodInicio,queue);
+        
+        while(!queue.isEmpty()){
+            
+            Nodo nod = queue.dequeue();
+            MiLista<Nodo> sucesores = (MiLista) maze.getSucs(nod.getId());
+            
+            for(Nodo suc : sucesores){
+                
+                if(!suc.getVisitado()){
+                    suc.setVisitado(true);
+                    if(suc.getCosto() != 0){
+                        queue.add(suc);
+                    } else {
+                        manejarCeros(maze, suc, queue);
+                    }
+                }
+            }
+        }
+        
+        maze.clearVisitados();
+        
+    }
+    
+    private static void manejarCeros(DigraphLista maze, Nodo nodInicio,
+            MiCola queueMaze){
+        
+        MiCola<Nodo> queue = new MiCola();
+        queue.add(nodInicio);
+        MiLista<Nodo> listaCeros = new MiLista();
+        MiLista<Nodo> listaAdyacentes = new MiLista();
+        
+        while(!queue.isEmpty()){
+            
+            Nodo nod = queue.dequeue();
+            MiLista<Nodo> sucesores = (MiLista) maze.getSucs(nod.getId());
+            
+            for(Nodo suc : sucesores){
+                
+                if(suc.getCosto() == 0 && !suc.getVisitado()){
+                    suc.setVisitado(true);
+                    queue.add(suc);
+                    listaCeros.add(suc);
+                } else if (suc.getCosto() != 0 && !listaAdyacentes.contains(suc) 
+                        && nod != nodInicio)
+                    listaAdyacentes.add(suc);
+                 
+            }
+        }
+        
+        if(listaCeros.getSize() == 0)
+            return;
+        
+        Nodo nodFin = maze.get(maze.getFin());
+        if(listaCeros.contains(nodFin))
+            maze.setFin(nodInicio.getId());
+        
+        for(Nodo cero: listaCeros){
+            maze.remove(cero.getId());
+        }
+        
+        for(Nodo adyacente : listaAdyacentes){
+            
+            adyacente.setVisitado(true);
+            queueMaze.add(adyacente);
+            
+            Arco arc1 = new Arco(nodInicio.getId(),adyacente.getId());
+            Arco arc2 = new Arco(adyacente.getId(),nodInicio.getId());
+            
+            maze.add(arc1);
+            maze.add(arc2);
+            
+        }
+        
+        
+        
+        
     }
     
     public static void main(String[] args) {
