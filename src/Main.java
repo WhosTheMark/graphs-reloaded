@@ -11,7 +11,7 @@ public class Main {
         int columna = entrada.nextInt();
                         
         DigraphLista maze = createMaze(entrada,fila,columna);
-        String resultado = bellmanFord(maze,fila*columna); //dijkstra(maze);
+        String resultado = bellmanFord(maze,fila*columna); 
         
         System.out.println(resultado);
         salida.write(resultado);
@@ -72,8 +72,6 @@ public class Main {
         nodInicio.setCostoAcc(nodInicio.getCosto());
         nodosActuales.add(nodInicio);
         int contadorCiclos = 0;
-        Integer penultimo = null; 
-        Integer ultimo = null;
         String Fin = maze.getFin();
         Nodo nodFin = maze.get(Fin);
         
@@ -93,11 +91,16 @@ public class Main {
                         if (!nodosExpandidos.contains(suc))
                            nodosExpandidos.add(suc);
 
-                    } else if (suc.getPadre() != nod && !nodosExpandidos.contains(suc) &&
+                    } else if (suc.getPadre() != nod && 
+                            (suc.getPadre() == null || suc.getPadre().getCosto() < nod.getCosto()) &&
                            suc.getCostoAcc() == nod.getCostoAcc() + suc.getCosto()
                             && suc != nod.getPadre()){
+                        
                         suc.setPadre(nod);
-                        nodosExpandidos.add(suc);
+                        
+                        if (!nodosExpandidos.contains(suc))
+                            nodosExpandidos.add(suc);
+
                     }
                 }
                         
@@ -107,25 +110,25 @@ public class Main {
             nodosActuales = nodosExpandidos;
             nodosExpandidos = temporal;
             
-            if(contadorCiclos == size - 1)
-                penultimo = nodFin.getCostoAcc();
-            
-            if(contadorCiclos == size)
-                ultimo = nodFin.getCostoAcc();
             
         }
         
-
+        nodFin.setVisitado(true);
+        boolean hayCiclo = false;
+        Nodo act = nodFin;
+        while(null != act.getPadre()){
+            if(act.getPadre().getVisitado()){
+                hayCiclo = true;
+                break;
+            } else {
+                act = act.getPadre();
+                act.setVisitado(true);
+            }
+        }
         
-        if(null != penultimo && null != ultimo && !ultimo.equals(penultimo))
+        if(hayCiclo)
             return "-INF";
         
-      /*  System.out.println("camino");
-        Nodo act = nodFin;
-        while(act.getPadre() != null){
-            act = act.getPadre();
-            System.out.println(act.getId());
-        }*/
         
         return String.valueOf(nodFin.getCostoAcc());
     }
