@@ -96,6 +96,9 @@ public class Main {
                            suc.getCostoAcc() == nod.getCostoAcc() + suc.getCosto()
                             && suc != nod.getPadre()){
                         
+                        if(suc.getCostoAcc() < 0)
+                            return "-INF";
+                        
                         suc.setPadre(nod);
                         
                         if (!nodosExpandidos.contains(suc))
