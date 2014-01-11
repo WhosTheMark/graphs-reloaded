@@ -94,7 +94,8 @@ public class Main {
                            nodosExpandidos.add(suc);
 
                     } else if (suc.getPadre() != nod && !nodosExpandidos.contains(suc) &&
-                           suc.getCostoAcc() == nod.getCostoAcc() + suc.getCosto()){
+                           suc.getCostoAcc() == nod.getCostoAcc() + suc.getCosto()
+                            && suc != nod.getPadre()){
                         suc.setPadre(nod);
                         nodosExpandidos.add(suc);
                     }
@@ -119,6 +120,12 @@ public class Main {
         if(null != penultimo && null != ultimo && !ultimo.equals(penultimo))
             return "-INF";
         
+      /*  System.out.println("camino");
+        Nodo act = nodFin;
+        while(act.getPadre() != null){
+            act = act.getPadre();
+            System.out.println(act.getId());
+        }*/
         
         return String.valueOf(nodFin.getCostoAcc());
     }
