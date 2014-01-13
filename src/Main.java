@@ -11,7 +11,7 @@ public class Main {
         int columna = entrada.nextInt();
                         
         DigraphLista maze = createMaze(entrada,fila,columna);
-        preprocesar(maze);
+        //preprocesar(maze);
         String resultado = bellmanFord(maze,fila*columna); 
         
         System.out.println(resultado);
@@ -73,8 +73,6 @@ public class Main {
         nodInicio.setCostoAcc(nodInicio.getCosto());
         nodosActuales.add(nodInicio);
         int contadorCiclos = 0;
-        String Fin = maze.getFin();
-        Nodo nodFin = maze.get(Fin);
         
         for(;contadorCiclos <= size && !nodosActuales.isEmpty(); ++contadorCiclos){
 
@@ -84,72 +82,26 @@ public class Main {
 
                 for(Nodo suc : sucesores){
 
-                    if((null == nod.getPadre() || suc != nod.getPadre()) &&
-                            suc.getCostoAcc() > nod.getCostoAcc() + suc.getCosto()){
+                    if(suc.getCostoAcc() > nod.getCostoAcc() + suc.getCosto()){
                         
                         suc.setCostoAcc(nod.getCostoAcc() + suc.getCosto());
-                        suc.setPadre(nod);
                         if (!nodosExpandidos.contains(suc))
                            nodosExpandidos.add(suc);
 
-                    } else if(suc.getPadre() != nod && suc.getCostoAcc() < 0 &&
-                           suc.getCostoAcc() == nod.getCostoAcc() + suc.getCosto()
-                            && suc != nod.getPadre() && nod.getCostoAcc() != 0
-                            && suc.getCostoAcc() + nod.getCostoAcc() != 0){ 
-                        
-                        
-                        return "-INF";
-                    
-                    } else if (suc.getPadre() != nod && 
-                            (suc.getPadre() == null || suc.getPadre().getCosto() < nod.getCosto()) &&
-                           suc.getCostoAcc() == nod.getCostoAcc() + suc.getCosto()
-                            && suc != nod.getPadre()){
-                        
-                        
-                        
-                        suc.setPadre(nod);
-                        
-                        if (!nodosExpandidos.contains(suc))
-                            nodosExpandidos.add(suc);
-
-                    }
-                }
-                        
+                    } 
+                }  
             }
             
             MiCola<Nodo> temporal = nodosActuales;
             nodosActuales = nodosExpandidos;
             nodosExpandidos = temporal;
-            
-            
         }
         
-        nodFin.setVisitado(true);
-        boolean hayCiclo = false;
-        Nodo act = nodFin;
-        while(null != act.getPadre()){
-            if(act.getPadre().getVisitado()){
-                hayCiclo = true;
-                break;
-            } else {
-                act = act.getPadre();
-                act.setVisitado(true);
-            }
-        }
-        
-        if(hayCiclo) {
+        String Fin = maze.getFin();
+        Nodo nodFin = maze.get(Fin);
 
-            int acc = 0;
-            while(act.getVisitado()) {
-                acc += act.getCosto(); 
-                act.setVisitado(false);
-                act = act.getPadre();
-            }
-            
-            if (acc < 0)
-               
-                return "-INF";
-        }
+        if(contadorCiclos -1 == size)
+            return "-INF";
         
         return String.valueOf(nodFin.getCostoAcc());
     }
