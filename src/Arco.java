@@ -9,7 +9,7 @@
 
       private String src = null;
       private String dst = null;
-      private int costo = 0;    
+      private double costo = 0;    
 
       private Arco() {}
    
@@ -20,7 +20,7 @@
      * @param dst id del nodo destino
      * @param costo costo del arco
      */
-      public Arco(String src, String dst, int costo) {      
+      public Arco(String src, String dst, double costo) {      
          this.src = src;
          this.dst = dst;
          this.costo = costo;
@@ -85,7 +85,7 @@
       
       @Override
       public int compareTo(Arco arc) {
-         return (this.costo - arc.costo);
+         return (int) (this.costo - arc.costo);
       }
       
       public String getSrc() {
@@ -95,7 +95,7 @@
       public String getDst() {
          return dst;
       }
-      public int getCosto() {
+      public double getCosto() {
          return costo;
       }
       

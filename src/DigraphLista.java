@@ -433,16 +433,7 @@ import java.util.Iterator;
          return grafo;  
       }
            
-      /**
-       * Borra las marcas de los nodos.
-       */
-      public void clearVisitados() {
-      
-         for (int i = 0; i < numVertices; ++i) {
-         
-               nodos[i].setVisitado(false);
-         }
-      }      
+     
 
     
    }

@@ -8,8 +8,9 @@
    public class Nodo implements Cloneable {
 
       private String id = null;
-      private int tiempo = 0;
-      private boolean visitado = false;      
+      private int xCoord = -1;
+      private int yCoord = -1;
+      private boolean tieneSatelite = false;      
        
       public Nodo(String i) {
          id = new String(i);
@@ -20,6 +21,12 @@
        * @returns devuelve una copia del objeto Nodo.
        */
 
+      public Nodo(String i, int x, int y) {
+          id = i;
+          xCoord = x;
+          yCoord = y;          
+      }
+      
       @Override
       protected Object clone() {
          return new Nodo(id);
@@ -61,19 +68,30 @@
           return id;
       }
       
-      public void setTiempo(int temps) {
-          tiempo = temps;
+      public void setTieneSatelite(boolean bool) {
+	  tieneSatelite = bool;
+      }
+      
+      public boolean getTieneSatelite() {
+	  return tieneSatelite; 
+      } 
+      
+      public int getxCoord() {
+          return xCoord;
       }
 
-      public int getTiempo() {
-          return tiempo;
+      public int getyCoord() {
+          return yCoord;
       }
-      
-      public void setVisitado(boolean bool) {
-	  visitado = bool;
+
+      public void setxCoord(int xCoord) {
+          this.xCoord = xCoord;
       }
+
+      public void setyCoord(int yCoord) {
+          this.yCoord = yCoord;
+      }
+   
       
-      public boolean getVisitado() {
-	  return visitado; 
-      } 
-   }
+      
+}
