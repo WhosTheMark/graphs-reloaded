@@ -46,7 +46,7 @@ public class Main {
                             
                 Arco arc = new Arco(nodo.getId(),nodo2.getId(),distancia);
                 
-                System.out.println(arc.toString());
+                
                 
                 grafo.add(arc);                
                 heapArc.add(arc);
@@ -87,43 +87,27 @@ public class Main {
     
     public static double ponerSatelites(DigraphLista grafo, FibHeap<Arco> mst, int numSatelites) {
         
+
+       Arco arc = mst.extraerMin();
+
+        if (numSatelites == 0 || numSatelites == 1) {
+           return Math.sqrt(-arc.getCosto());
+        } 
+      
+         numSatelites -= 2;
+
+
         while (!mst.esVacio()) {
             
-            Arco arc = mst.extraerMin();
-            System.out.println("------------------");
-            System.out.println(arc.toString());
-            String src = arc.getSrc();
-            String dst = arc.getDst();
-            Nodo nod1 = grafo.get(src);
-            Nodo nod2 = grafo.get(dst);
+            arc = mst.extraerMin();
             
             
             if (numSatelites == 0) {
                 return Math.sqrt(-arc.getCosto());
             } 
             
-            if (!nod1.getTieneSatelite() && nod2.getTieneSatelite()) {
-                
-                nod1.setTieneSatelite(true);
-                --numSatelites; 
-                
-            } else if (nod1.getTieneSatelite() && !nod2.getTieneSatelite()) {
-                
-                nod2.setTieneSatelite(true);
-                --numSatelites;
-                
-            } else {
-                
-                if (numSatelites == 1) {
-                    
-                    return Math.sqrt(-arc.getCosto());
-                }
-                
-                nod1.setTieneSatelite(true);
-                nod2.setTieneSatelite(true);
-                numSatelites -= 2;
-                
-            }
+            --numSatelites;
+
         }
         return 0;
     }
@@ -140,7 +124,7 @@ public class Main {
         
         double distancia = ponerSatelites(grafo,mst,satelites);
         
-        System.out.println(distancia);
+        
         DecimalFormat df = new DecimalFormat("#.00");
         String dist = df.format(distancia);
         
